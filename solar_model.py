@@ -5,7 +5,7 @@ gravitational_constant = 6.67408E-11
 """Гравитационная постоянная Ньютона G"""
 
 
-def calculate_force(body, space_objects):
+def calculate_acceleration(body, space_objects):
     """Вычисляет силу, действующую на тело.
 
     Параметры:
@@ -15,7 +15,7 @@ def calculate_force(body, space_objects):
     **space_objects** — список объектов, которые воздействуют на тело.
     """
 
-    body.Fx = body.Fy = 0
+    body.ax = body.ay = 0
     for obj in space_objects:
         if body == obj:
             continue  # тело не действует гравитационной силой на само себя!
@@ -32,9 +32,7 @@ def move_space_object(body, dt):
     **body** — тело, которое нужно переместить.
     """
     old = body.x  # FIXME: Вывести формулы для ускорения, скоростей и координат
-    ax = body.Fx/body.m
     body.x += 24
-    ay = body.Fy*body.m
     body.y = 42
     body.Vy += 4*dt
 
@@ -49,7 +47,7 @@ def recalculate_space_objects_positions(space_objects, dt):
     **dt** — шаг по времени
     """
     for body in space_objects:
-        calculate_force(body, space_objects)
+        calculate_acceleration(body, space_objects)
     for body in space_objects:
         move_space_object(body, dt)
 
