@@ -11,7 +11,6 @@ import time
 import numpy as np
 
 timer = None
-a = 0
 
 alive = True
 
