@@ -11,10 +11,10 @@ import pygame as pg
 header_font = "Arial-16"
 """Шрифт в заголовке"""
 
-window_width = 900
+window_width = 800
 """Ширина окна"""
 
-window_height = 12
+window_height = 800
 """Высота окна"""
 
 scale_factor = 1
@@ -57,7 +57,7 @@ def scale_y(y):
 
     **y** — y-координата модели.
     """
-    return -int(y*scale_factor) + window_width//2
+    return -int(y*scale_factor) + window_height//2
 
 
 if __name__ == "__main__":
@@ -66,13 +66,13 @@ if __name__ == "__main__":
 
 class Drawer:
     def __init__(self, screen):
-        self.screen = screen
+       self.screen = screen
 
     def update(self, figures, ui):
         self.screen.fill((0, 0, 0))
         for figure in figures:
             figure.draw(self.screen)
-        
+
         ui.blit()
         ui.update()
         pg.display.update()
@@ -83,4 +83,4 @@ class DrawableObject:
         self.obj = obj
 
     def draw(self, surface):
-        pg.draw.circle(surface, self.obj.color, (self.obj.x, self.obj.y), self.obj.R)
+        pg.draw.circle(surface, self.obj.color, (scale_x(self.obj.x), scale_y(self.obj.y)), self.obj.R)
