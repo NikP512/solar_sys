@@ -20,7 +20,7 @@ def calculate_acceleration(body, space_objects):
         if body == obj:
             continue  # тело не действует гравитационной силой на само себя!
         r = ((body.x - obj.x)**2 + (body.y - obj.y)**2)**0.5
-        a = (gravitational_constant * obj.mass) / (r**2)
+        a = (gravitational_constant * obj.m) / (r**2)
         body.ax = a * (obj.x - body.x) / r
         body.ay = a * (obj.y - body.y) / r
 

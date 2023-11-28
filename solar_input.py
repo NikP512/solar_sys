@@ -56,12 +56,12 @@ def parse_star_parameters(line, star):
     """
     words = line.lower().split()
     star.color = words[2]
-    star.R = int(words(1))
-    star.m = int(words[3])
-    star.x = int(words[4])
-    star.y = int(words[5])
-    star.vx = int(words[6])
-    star.vy = int(words[7])
+    star.R = float(words[1])
+    star.m = float(words[3])
+    star.x = float(words[4])
+    star.y = float(words[5])
+    star.vx = float(words[6])
+    star.vy = float(words[7])
 
 
 
@@ -85,12 +85,12 @@ def parse_planet_parameters(line, planet):
     """
     words = line.lower().split()
     planet.color = words[2]
-    planet.R = int(words(1))
-    planet.m = int(words[3])
-    planet.x = int(words[4])
-    planet.y = int(words[5])
-    planet.vx = int(words[6])
-    planet.vy = int(words[7])
+    planet.R = float(words[1])
+    planet.m = float(words[3])
+    planet.x = float(words[4])
+    planet.y = float(words[5])
+    planet.vx = float(words[6])
+    planet.vy = float(words[7])
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):
