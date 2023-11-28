@@ -20,8 +20,9 @@ def calculate_acceleration(body, space_objects):
         if body == obj:
             continue  # тело не действует гравитационной силой на само себя!
         r = ((body.x - obj.x)**2 + (body.y - obj.y)**2)**0.5
-        r = max(r, body.R)  # FIXME: обработка аномалий при прохождении одного тела сквозь другое
-        pass # FIXME: Взаимодействие объектов
+        a = (gravitational_constant * obj.mass) / (r**2)
+        body.ax = a * (obj.x - body.x) / r
+        body.ay = a * (obj.y - body.y) / r
 
 
 def move_space_object(body, dt):
@@ -31,10 +32,10 @@ def move_space_object(body, dt):
 
     **body** — тело, которое нужно переместить.
     """
-    old = body.x  # FIXME: Вывести формулы для ускорения, скоростей и координат
-    body.x += 24
-    body.y = 42
-    body.Vy += 4*dt
+    body.vx = body.vx + body.ax * dt
+    body.vy = body.vy + body.ay * dt
+    body.x = body.x + body.vx * dt
+    body.y = body.y + body.vy * dt
 
 
 def recalculate_space_objects_positions(space_objects, dt):
