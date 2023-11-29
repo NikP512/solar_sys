@@ -1,7 +1,6 @@
 # coding: utf-8
 # license: GPLv3
 
-import pygame as pg
 from solar_vis import *
 from solar_model import *
 from solar_input import *
@@ -21,7 +20,7 @@ model_time = 0
 """Физическое время от начала расчёта.
 Тип: float"""
 
-time_scale = 1000.0
+time_scale = 1
 """Шаг по времени при моделировании.
 Тип: float"""
 
@@ -36,8 +35,8 @@ def execution(delta):
     При perform_execution == True функция запрашивает вызов самой себя по таймеру через от 1 мс до 100 мс.
     """
     global model_time
-    global displayed_time
-    recalculate_space_objects_positions([dr.obj for dr in space_objects], delta)
+    for _ in range(100):
+        recalculate_space_objects_positions([dr.obj for dr in space_objects], delta/100)
     model_time += delta
 
 
@@ -68,11 +67,10 @@ def open_file():
     Считанные объекты сохраняются в глобальный список space_objects
     """
     global space_objects
-    global browser
     global model_time
 
     model_time = 0.0
-    in_filename = "solar_system.txt"
+    in_filename = "one_satellite.txt"
     space_objects = read_space_objects_data_from_file(in_filename)
     max_distance = max([max(abs(obj.obj.x), abs(obj.obj.y)) for obj in space_objects])
     calculate_scale_factor(max_distance)
@@ -87,7 +85,7 @@ def handle_events(events, menu):
 
 
 def slider_to_real(val):
-    return np.exp(5 + val)
+    return np.exp(val)
 
 
 def slider_reaction(event):
@@ -96,8 +94,8 @@ def slider_reaction(event):
 
 
 def init_ui(screen):
-    global browser
-    slider = thorpy.SliderX(100, (-10, 10), "Simulation speed")
+    global timer
+    slider = thorpy.SliderX(100, (0, 17), "Simulation speed")
     slider.user_func = slider_reaction
     button_stop = thorpy.make_button("Quit", func=stop_execution)
     button_pause = thorpy.make_button("Pause", func=pause_execution)
@@ -134,18 +132,12 @@ def main():
     """Главная функция главного модуля.
     Создаёт объекты графического дизайна библиотеки tkinter: окно, холст, фрейм с кнопками, кнопки.
     """
-    
-    global physical_time
-    global displayed_time
-    global time_step
-    global time_speed
-    global space
-    global start_button
+
+    import pygame as pg
     global perform_execution
     global timer
 
     print('Modelling started!')
-    physical_time = 0
 
     pg.init()
     
@@ -161,7 +153,7 @@ def main():
         handle_events(pg.event.get(), menu)
         cur_time = time.perf_counter()
         if perform_execution:
-            execution((cur_time - last_time) * time_scale)
+            execution((cur_time - last_time)*time_scale)
             text = "%d seconds passed" % (int(model_time))
             timer.set_text(text)
 
@@ -170,6 +162,7 @@ def main():
         time.sleep(1.0 / 60)
 
     print('Modelling finished!')
+
 
 if __name__ == "__main__":
     main()
